@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class SignIn extends StatefulWidget {
-  const SignIn({super.key});
+class SignUp extends StatefulWidget {
+  const SignUp({super.key});
 
   @override
-  State<SignIn> createState() => _SignInState();
+  State<SignUp> createState() => _SignUpState();
 }
 
-class _SignInState extends State<SignIn> {
+class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +17,7 @@ class _SignInState extends State<SignIn> {
           child: Stack(
             children: [
               Container(
-                height: MediaQuery.of(context).size.height / 4.0,
+                height: MediaQuery.of(context).size.height / 1.7,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
 
@@ -38,7 +38,7 @@ class _SignInState extends State<SignIn> {
                   children: [
                     Center(
                         child: Text(
-                      "SignIn",
+                      "SignUp",
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 24.0,
@@ -46,7 +46,7 @@ class _SignInState extends State<SignIn> {
                     )),
                     Center(
                         child: Text(
-                      "Login to your account",
+                      "Create a new account",
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 20.0,
@@ -61,7 +61,7 @@ class _SignInState extends State<SignIn> {
                         child: Container(
                           padding: EdgeInsets.symmetric(
                               vertical: 20, horizontal: 20),
-                          height: MediaQuery.of(context).size.height / 2,
+                          height: MediaQuery.of(context).size.height / 1.5,
                           width: MediaQuery.of(context).size.width,
                           decoration: BoxDecoration(
                               color: Colors.white,
@@ -69,6 +69,32 @@ class _SignInState extends State<SignIn> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+
+                                // Name
+                              Text(
+                                "Name",
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w500),
+                              ),
+                              SizedBox(
+                                height: 7,
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        width: 1.0, color: Colors.black),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: TextField(
+                                  // To remove the border already present which
+                                  decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      prefixIcon: Icon(Icons.email)),
+                                ),
+                              ),
+                                 SizedBox(
+                                height: 20,
+                              ),
+
                               // Email
                               Text(
                                 "Email",
@@ -118,17 +144,39 @@ class _SignInState extends State<SignIn> {
                                 ),
                               ),
 
+                                SizedBox(
+                                height: 20,
+                              ),
+                            
+                              // Confirm Password
+                              Text(
+                                "Confirm Password",
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w500),
+                              ),
+                              SizedBox(
+                                height: 7,
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        width: 1.0, color: Colors.black),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: TextField(
+                                  // To remove the border already present which
+                                  decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      prefixIcon: Icon(Icons.password)),
+
+                                  // To not to show what is written in the text field
+                                  obscureText: true,
+                                ),
+                              ),
+
                               SizedBox(
                                 height: 20,
                               ),
-                              Container(
-                                  alignment: Alignment.bottomRight,
-                                  child: Text(
-                                    "Forgot Password ?",
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w500),
-                                  )),
+                            
 
                               //SignIn
                               SizedBox(
@@ -163,11 +211,11 @@ class _SignInState extends State<SignIn> {
                     SizedBox(height: 50,),
                     RichText(
                       text: TextSpan(
-                        text: "Don't have an account ?",
+                        text: "Already have an account ?",
                         style: TextStyle(fontSize: 20, color: Colors.black),
                         children:[
                           TextSpan(
-                              text: ' SignUp Now !',
+                              text: ' SignIn ',
                               style: TextStyle(color: Color.fromARGB(255, 1, 151, 185),fontWeight: FontWeight.bold)),
                           
                         ],
