@@ -54,108 +54,110 @@ class _HomePageState extends State<HomePage> {
                           topRight: Radius.circular(20))),
                   child: Column(
                     children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(60),
-                            child: Image.asset(
-                              "images/sk2.jpg",
-                              height: 70,
-                              width: 70,
-                              fit: BoxFit.cover,
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(60),
+                              child: Image.asset(
+                                "images/sk2.jpg",
+                                height: 70,
+                                width: 70,
+                                fit: BoxFit.cover,
+                              ),
                             ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              
-                              children: [
-                                SizedBox(
-                                  height: 14,
-                                ),
-                                Text(
-                                  "Shantanu Khadse",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 19,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                Text(
-                                  "Hello ! What are you doing ?",
-                                  style: TextStyle(
-                                      color: Colors.black45,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w500),
-                                )
-                              ]),
-                               Spacer(),
-                          Text(
-                            "03:20 PM",
-                            style: TextStyle(
-                                color: Colors.black45,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w500,),
-                          )
-                        ],
-                      ),
-
-                      SizedBox(height: 20,),
-
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(60),
-                            child: Image.asset(
-                              "images/sk1.jpg",
-                              height: 70,
-                              width: 70,
-                              fit: BoxFit.cover,
+                            SizedBox(
+                              width: 10,
                             ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              
-                              children: [
-                                SizedBox(
-                                  height: 14,
-                                ),
-                                Text(
-                                  "Shantu",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 19,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                Text(
-                                  "Hello",
-                                  style: TextStyle(
-                                      color: Colors.black45,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w500),
-                                )
-                              ]),
-                              Spacer(),
-                          Text(
-                            "08:05 PM",
-                            style: TextStyle(
-                                color: Colors.black45,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w500,),
-                          )
-                        ],
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    height: 14,
+                                  ),
+                                  Text(
+                                    "Shantanu Khadse",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 19,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  Text(
+                                    "Hello ! What are you doing ?",
+                                    style: TextStyle(
+                                        color: Colors.black45,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w500),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Text(
+                              "03:20 PM",
+                              style: TextStyle(
+                                  color: Colors.black45,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w500),
+                            )
+                          ],
+                        ),
                       ),
-
-
-
+                      SizedBox(height: 15),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(60),
+                              child: Image.asset(
+                                "images/sk1.jpg",
+                                height: 70,
+                                width: 70,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    height: 14,
+                                  ),
+                                  Text(
+                                    "Shantu",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 19,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  Text(
+                                    "Hello",
+                                    style: TextStyle(
+                                        color: Colors.black45,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w500),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Text(
+                              "08:05 PM",
+                              style: TextStyle(
+                                  color: Colors.black45,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w500),
+                            )
+                          ],
+                        ),
+                      ),
                     ],
-
                   ),
                 )
               ],
