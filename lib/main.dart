@@ -1,3 +1,4 @@
+import 'package:chat_app/pages/chatpage.dart';
 import 'package:chat_app/pages/home.dart';
 import 'package:chat_app/pages/signin.dart';
 import 'package:chat_app/pages/signup.dart';
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Chat App',
  
-      home: const HomePage(),
+      home: const ChatPage(),
     );
   }
 }
