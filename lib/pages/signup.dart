@@ -34,11 +34,19 @@ class _SignUpState extends State<SignUp> {
 
         String Id = randomAlphaNumeric(10);
 
+
+        // To implement Search 
+        String user = mailcontroller.text.replaceAll("@gmai.com", "");
+        String updateusername =
+            user.replaceFirst(user[0], user[0].toUpperCase());
+        String firstletter = user.substring(0, 1).toUpperCase();
+
         //  To store the user data to firebase firestore
         Map<String, dynamic> userInfoMap = {
           "Name": namecontroller.text,
           "Email": mailcontroller.text,
-          "username": mailcontroller.text.replaceAll("@gmail.com", ""),
+          "username": updateusername.toUpperCase(),
+          "SearchKey": firstletter,
           "Photo": "https://images.app.goo.gl/CYS1ipQbwLJfd6ZdA",
           "Id": Id
         };
@@ -62,7 +70,6 @@ class _SignUpState extends State<SignUp> {
             ),
           ),
         );
-
 
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => HomePage()));
@@ -112,8 +119,6 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
-      
       body: Container(
         child: Container(
           child: Stack(
@@ -190,10 +195,9 @@ class _SignUpState extends State<SignUp> {
                                   // width: MediaQuery.of(context).size.width,
                                   decoration: BoxDecoration(
                                       border: Border.all(
-                                          width: 1.0
-                                          
-                                          , color: Colors.black,
-                                         ),
+                                        width: 1.0,
+                                        color: Colors.black,
+                                      ),
                                       borderRadius: BorderRadius.circular(10)),
                                   child: TextFormField(
                                     controller: namecontroller,
