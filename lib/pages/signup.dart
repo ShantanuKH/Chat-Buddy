@@ -13,6 +13,8 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+// Allow user to signup and go to the home page directly
+
   String email = "", password = "", name = "", confirmPassword = "";
   TextEditingController mailcontroller = new TextEditingController();
   TextEditingController passwordcontroller = new TextEditingController();
@@ -32,6 +34,7 @@ class _SignUpState extends State<SignUp> {
 
         String Id = randomAlphaNumeric(10);
 
+        //  To store the user data to firebase firestore
         Map<String, dynamic> userInfoMap = {
           "Name": namecontroller.text,
           "Email": mailcontroller.text,
@@ -40,8 +43,9 @@ class _SignUpState extends State<SignUp> {
           "Id": Id
         };
 
+        // This will finally add the data to the firebase database
         await DatabaseMethods().addUSerDetails(userInfoMap, Id);
-
+        // Save user data locally
         await SharedPreferenceHelper().saveUserId(Id);
         await SharedPreferenceHelper().saveUserDisplayName(namecontroller.text);
         await SharedPreferenceHelper().saveUserEmail(mailcontroller.text);
@@ -58,6 +62,7 @@ class _SignUpState extends State<SignUp> {
             ),
           ),
         );
+
 
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => HomePage()));
@@ -107,50 +112,48 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
+      
       body: Container(
-        child: Stack(
-          children: [
-            Container(
-              height: MediaQuery.of(context).size.height / 1.7,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Color.fromRGBO(61, 182, 229, 1),
-                    Color(0xFF7ce8ff)
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.vertical(
-                  bottom: Radius.elliptical(
-                      MediaQuery.of(context).size.width, 105.5),
-                ),
+        child: Container(
+          child: Stack(
+            children: [
+              Container(
+                height: MediaQuery.of(context).size.height / 1.7,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+
+                    // To give the radient color to our project
+                    gradient: LinearGradient(colors: [
+                      Color.fromRGBO(61, 182, 229, 1),
+                      Color(0xFF7ce8ff)
+                    ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+
+                    // This will make the radius curve from bottom
+                    borderRadius: BorderRadius.vertical(
+                        bottom: Radius.elliptical(
+                            MediaQuery.of(context).size.width, 105.5))),
               ),
-            ),
-            SingleChildScrollView(
-              child: Padding(
+              Padding(
                 padding: EdgeInsets.only(top: 70),
                 child: Column(
                   children: [
                     Center(
-                      child: Text(
-                        "SignUp",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 24.0,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
+                        child: Text(
+                      "SignUp",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24.0,
+                          fontWeight: FontWeight.bold),
+                    )),
                     Center(
-                      child: Text(
-                        "Create a new account",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ),
+                        child: Text(
+                      "Create a new account",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.w500),
+                    )),
                     Container(
                       margin: EdgeInsets.symmetric(
                           vertical: 20.0, horizontal: 20.0),
@@ -160,14 +163,19 @@ class _SignUpState extends State<SignUp> {
                         child: Container(
                           padding: EdgeInsets.symmetric(
                               vertical: 20, horizontal: 20),
+                          height: MediaQuery.of(context).size.height / 1.5,
+                          width: MediaQuery.of(context).size.width,
                           decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(20)),
+
+                          // To authentication we used this key and form
                           child: Form(
                             key: _formkey,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                // Name
                                 Text(
                                   "Name",
                                   style: TextStyle(
@@ -178,9 +186,14 @@ class _SignUpState extends State<SignUp> {
                                   height: 7,
                                 ),
                                 Container(
+                                  // height: MediaQuery.of(context).size.height/1.15 ,
+                                  // width: MediaQuery.of(context).size.width,
                                   decoration: BoxDecoration(
                                       border: Border.all(
-                                          width: 1.0, color: Colors.black),
+                                          width: 1.0
+                                          
+                                          , color: Colors.black,
+                                         ),
                                       borderRadius: BorderRadius.circular(10)),
                                   child: TextFormField(
                                     controller: namecontroller,
@@ -190,6 +203,7 @@ class _SignUpState extends State<SignUp> {
                                       }
                                       return null;
                                     },
+                                    // To remove the border already present which
                                     decoration: InputDecoration(
                                         border: InputBorder.none,
                                         prefixIcon: Icon(Icons.person)),
@@ -198,6 +212,8 @@ class _SignUpState extends State<SignUp> {
                                 SizedBox(
                                   height: 20,
                                 ),
+
+                                // Email
                                 Text(
                                   "Email",
                                   style: TextStyle(
@@ -220,11 +236,13 @@ class _SignUpState extends State<SignUp> {
                                       }
                                       return null;
                                     },
+                                    // To remove the border already present which
                                     decoration: InputDecoration(
                                         border: InputBorder.none,
                                         prefixIcon: Icon(Icons.email)),
                                   ),
                                 ),
+                                // Password
                                 SizedBox(
                                   height: 20,
                                 ),
@@ -250,15 +268,21 @@ class _SignUpState extends State<SignUp> {
                                       }
                                       return null;
                                     },
+                                    // To remove the border already present which
                                     decoration: InputDecoration(
                                         border: InputBorder.none,
                                         prefixIcon: Icon(Icons.key)),
+
+                                    // To not to show what is written in the text field
                                     obscureText: true,
                                   ),
                                 ),
+
                                 SizedBox(
                                   height: 20,
                                 ),
+
+                                // Confirm Password
                                 Text(
                                   "Confirm Password",
                                   style: TextStyle(
@@ -281,15 +305,21 @@ class _SignUpState extends State<SignUp> {
                                       }
                                       return null;
                                     },
+                                    // To remove the border already present which
                                     decoration: InputDecoration(
                                         border: InputBorder.none,
                                         prefixIcon: Icon(Icons.password)),
+
+                                    // To not to show what is written in the text field
                                     obscureText: true,
                                   ),
                                 ),
+
                                 SizedBox(
                                   height: 20,
                                 ),
+
+                                //SignIn
                                 SizedBox(
                                   height: 80,
                                 ),
@@ -297,24 +327,23 @@ class _SignUpState extends State<SignUp> {
                                   child: Material(
                                     elevation: 10,
                                     child: Container(
-                                      padding: EdgeInsets.only(
-                                          top: 10,
-                                          bottom: 10,
-                                          right: 20,
-                                          left: 20),
-                                      decoration: BoxDecoration(
-                                          color:
-                                              Color.fromARGB(255, 16, 193, 228),
-                                          borderRadius:
-                                              BorderRadius.circular(5)),
-                                      child: Text("SignUp",
-                                          style: TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.white)),
-                                    ),
+                                        padding: EdgeInsets.only(
+                                            top: 10,
+                                            bottom: 10,
+                                            right: 20,
+                                            left: 20),
+                                        decoration: BoxDecoration(
+                                            color: Color.fromARGB(
+                                                255, 16, 193, 228),
+                                            borderRadius:
+                                                BorderRadius.circular(5)),
+                                        child: Text("SignIn",
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.white))),
                                   ),
-                                ),
+                                )
                               ],
                             ),
                           ),
@@ -324,6 +353,8 @@ class _SignUpState extends State<SignUp> {
                     SizedBox(
                       height: 50,
                     ),
+
+                    // On tapping if all the validator case is true then it will call the registration method
                     GestureDetector(
                       onTap: () {
                         if (_formkey.currentState!.validate()) {
@@ -331,32 +362,30 @@ class _SignUpState extends State<SignUp> {
                             email = mailcontroller.text;
                             name = namecontroller.text;
                             password = passwordcontroller.text;
-                            confirmPassword =
-                                confirmPasswordcontroller.text;
+                            confirmPassword = confirmPasswordcontroller.text;
                           });
-                          registration();
                         }
+                        registration();
                       },
-                      child: RichText(
-                        text: TextSpan(
-                          text: "Already have an account ?",
-                          style: TextStyle(fontSize: 20, color: Colors.black),
-                          children: [
-                            TextSpan(
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        text: "Already have an account ?",
+                        style: TextStyle(fontSize: 20, color: Colors.black),
+                        children: [
+                          TextSpan(
                               text: ' SignUp ',
                               style: TextStyle(
                                   color: Color.fromARGB(255, 1, 151, 185),
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
+                                  fontWeight: FontWeight.bold)),
+                        ],
                       ),
-                    ),
+                    )
                   ],
                 ),
-              ),
-            ),
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );

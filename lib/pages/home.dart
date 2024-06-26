@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(left: 20, right: 20, top: 20),
+                  padding: EdgeInsets.only(left: 15, right: 20, top: 10, bottom: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
                             fontWeight: FontWeight.bold),
                       ),
                       Container(
-                          padding: EdgeInsets.all(6),
+                          padding: EdgeInsets.all(8),
                           decoration: BoxDecoration(
                               color: Colors.blue.shade300,
                               borderRadius: BorderRadius.circular(30)),
@@ -43,8 +43,8 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 23),
-                  padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+                  margin: EdgeInsets.only(top: 20),
+                  padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height / 1.18,
                   decoration: BoxDecoration(
@@ -55,7 +55,7 @@ class _HomePageState extends State<HomePage> {
                   child: Column(
                     children: [
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        padding: EdgeInsets.only(left: 5, right: 10, top: 5, bottom: 5),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -76,7 +76,7 @@ class _HomePageState extends State<HomePage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   SizedBox(
-                                    height: 14,
+                                    height: 10,
                                   ),
                                   Text(
                                     "Shantanu Khadse",
@@ -107,7 +107,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       SizedBox(height: 15),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        padding: EdgeInsets.only(left: 5, right: 10, top: 5, bottom: 5),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -128,7 +128,7 @@ class _HomePageState extends State<HomePage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   SizedBox(
-                                    height: 14,
+                                    height: 10,
                                   ),
                                   Text(
                                     "Shantu",

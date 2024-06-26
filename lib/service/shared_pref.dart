@@ -1,5 +1,6 @@
 // This will store the data of the user using its specific unique key of the user that will help to locate the user details
 // Store user data locally
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferenceHelper {
@@ -56,8 +57,9 @@ class SharedPreferenceHelper {
     return prefs.getString(userEmailKey);
   }
 
-   Future<String?> getUserDisplayName() async {
+  Future<String?> getUserDisplayName() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(displaynameKey);
   }
 }
+

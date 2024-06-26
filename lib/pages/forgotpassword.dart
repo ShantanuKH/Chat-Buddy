@@ -1,76 +1,59 @@
-import 'package:chat_app/pages/home.dart';
 import 'package:chat_app/pages/signup.dart';
-import 'package:chat_app/service/database.dart';
-import 'package:chat_app/service/shared_pref.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class SignIn extends StatefulWidget {
-  const SignIn({super.key});
+class ForgotPassword extends StatefulWidget {
+  const ForgotPassword({super.key});
 
   @override
-  State<SignIn> createState() => _SignInState();
+  State<ForgotPassword> createState() => _ForgotPasswordState();
 }
 
-class _SignInState extends State<SignIn> {
-  // Creating signin feature so that people can signin if they already have an account
-
-  String email = "", password = "", name = "", pic = "", username = "", id = "";
-  TextEditingController usermailController = new TextEditingController();
-
-  TextEditingController userpasswordController = new TextEditingController();
-
+class _ForgotPasswordState extends State<ForgotPassword> {
+  // On clicking on the send email user will get the link of firebase in their email which is entered in the textfield by the user and by doing so user can recover their their password
+  // User will be redirected to the page were they can reassign the new password
+  String email = "";
   final _formkey = GlobalKey<FormState>();
 
-  userLogin() async {
+  TextEditingController usermailController = new TextEditingController();
+
+  // function to reset the password
+
+  resetPassword() async {
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      // Looks up the user in the "users" collection of the Firestore database where the "Email" matches the given email
-      QuerySnapshot querySnapshot =
-          await DatabaseMethods().getUserbyEmail(email);
-
-      // querySnapshot.docs[0] gets the first document (user) from the search results.
-      name = "${querySnapshot.docs[0]["Name"]}";
-      username = "${querySnapshot.docs[0]["username"]}";
-      pic = "${querySnapshot.docs[0]["Photo"]}";
-      id = querySnapshot.docs[0].id;
-
-      // This will save the users details
-      await SharedPreferenceHelper().saveUserDisplayName(name);
-      await SharedPreferenceHelper().saveUserName(username);
-      await SharedPreferenceHelper().saveUserId(id);
-      await SharedPreferenceHelper().saveUserPic(pic);
-
-      // Here, we use pushReplacement instead of just push because if the user would have signed up and if we go to the home page, after clicking on the back button on the home page, the user would come to the signup page which we don't want. So we use Navigator.pushReplacement
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => HomePage()),
-      );
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Center(
+  child: Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Text(
+        "Password Reset Email has been sent.",
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.w500,
+          color: Colors.blue,
+        ),
+        textAlign: TextAlign.center,
+      ),
+      SizedBox(height: 8),
+      Text(
+        "Please check your Email!",
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          color: Colors.blue,
+        ),
+        textAlign: TextAlign.center,
+      ),
+    ],
+  ),
+)
+));
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: Colors.orangeAccent,
-            content: Text(
-              "No user found",
-              style: TextStyle(fontSize: 18, color: Colors.black),
-            ),
-          ),
-        );
-      } else if (e.code == 'wrong-password') {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: Colors.orangeAccent,
-            content: Text(
-              "Wrong password",
-              style: TextStyle(fontSize: 18, color: Colors.black),
-            ),
-          ),
-        );
+      if (e.code == "user-not-found") {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text("User Not Found !", style: TextStyle(fontSize: 18))));
       }
     }
   }
@@ -105,7 +88,7 @@ class _SignInState extends State<SignIn> {
                   children: [
                     Center(
                         child: Text(
-                      "SignIn",
+                      "Password Recovery",
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 24.0,
@@ -113,7 +96,7 @@ class _SignInState extends State<SignIn> {
                     )),
                     Center(
                         child: Text(
-                      "Login to your account",
+                      "Enter Your Email",
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 20.0,
@@ -128,7 +111,7 @@ class _SignInState extends State<SignIn> {
                         child: Container(
                           padding: EdgeInsets.symmetric(
                               vertical: 20, horizontal: 20),
-                          height: MediaQuery.of(context).size.height / 2,
+                          height: MediaQuery.of(context).size.height / 3,
                           width: MediaQuery.of(context).size.width,
                           decoration: BoxDecoration(
                               color: Colors.white,
@@ -167,51 +150,6 @@ class _SignInState extends State<SignIn> {
                                   ),
                                 ),
                                 // Password
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Text(
-                                  "Password",
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                SizedBox(
-                                  height: 7,
-                                ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                          width: 1.0, color: Colors.black),
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: TextFormField(
-                                    // To remove the border already present which
-                                    controller: userpasswordController,
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return "Please Enter Your Password";
-                                      }
-                                    },
-                                    decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                        prefixIcon: Icon(Icons.key)),
-
-                                    // To not to show what is written in the text field
-                                    obscureText: true,
-                                  ),
-                                ),
-
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Container(
-                                    alignment: Alignment.bottomRight,
-                                    child: Text(
-                                      "Forgot Password ?",
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w500),
-                                    )),
 
                                 //SignIn
                                 SizedBox(
@@ -222,10 +160,9 @@ class _SignInState extends State<SignIn> {
                                     if (_formkey.currentState!.validate()) {
                                       setState(() {
                                         email = usermailController.text;
-                                        password = userpasswordController.text;
                                       });
+                                      resetPassword();
                                     }
-                                    userLogin();
                                   },
                                   child: Center(
                                     child: Material(
@@ -241,7 +178,7 @@ class _SignInState extends State<SignIn> {
                                                   255, 16, 193, 228),
                                               borderRadius:
                                                   BorderRadius.circular(5)),
-                                          child: Text("SignIn",
+                                          child: Text("Send Email",
                                               style: TextStyle(
                                                   fontSize: 15,
                                                   fontWeight: FontWeight.w500,
@@ -258,37 +195,29 @@ class _SignInState extends State<SignIn> {
                     SizedBox(
                       height: 50,
                     ),
-                Container(
-  margin: EdgeInsets.only(top: 20),
-  child: Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      Text(
-        "Don't have an account?",
-        style: TextStyle(fontSize: 20, color: Colors.black),
-      ),
-      SizedBox(width: 5),
-      GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => SignUp()),
-          );
-        },
-        child: Text(
-          'SignUp',
-          style: TextStyle(
-            color: Color.fromARGB(255, 1, 151, 185),
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-          ),
-        ),
-      ),
-    ],
-  ),
-),
-
-
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => SignUp()),
+                        );
+                      },
+                      child: RichText(
+                        text: TextSpan(
+                          text: "Want to SignUp ?",
+                          style: TextStyle(fontSize: 20, color: Colors.black),
+                          children: [
+                            TextSpan(
+                              text: ' SignUp Now!',
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 1, 151, 185),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
                   ],
                 ),
               )
