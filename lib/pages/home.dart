@@ -9,6 +9,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  // Search Feature in the app
+
+  bool search = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,26 +22,78 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(left: 15, right: 20, top: 10, bottom: 10),
+                  padding:
+                      EdgeInsets.only(left: 15, right: 20, top: 10, bottom:2),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+
+                      // If search is true then we will show search tab/field and if false then we will show the "ChatUp Text"
+                      search? Expanded(
+                              child: Container(
+                                margin: EdgeInsets.all(10.0),
+                                padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 5.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black26,
+                                      blurRadius: 6.0,
+                                      offset: Offset(0, 2),
+                                    ),
+                                  ],
+                                  border: Border.all(
+                                    color: Colors.black12,
+                                    width: 1.0,
+                                  ),
+                                ),
+                                child: TextField(
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: "Search User",
+                                    hintStyle: TextStyle(
+                                      color: Colors.black12,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                  style: TextStyle(
+                                    color: Colors.black54,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                            )
+
+                        :
+                         Text(
                         "ChatUp",
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 25,
                             fontWeight: FontWeight.bold),
                       ),
-                      Container(
-                          padding: EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                              color: Colors.blue.shade300,
-                              borderRadius: BorderRadius.circular(30)),
-                          child: Icon(
-                            Icons.search,
-                            color: Colors.white,
-                          ))
+                      GestureDetector(
+                        onTap: () {
+
+                        
+                          search = true;
+                          setState(() {
+                            
+                          });
+                        },
+                        child: Container(
+                            padding: EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                                color: Colors.blue.shade300,
+                                borderRadius: BorderRadius.circular(30)),
+                            child: Icon(
+                              Icons.search,
+                              color: Colors.white,
+                            )),
+                      )
                     ],
                   ),
                 ),
@@ -46,7 +101,7 @@ class _HomePageState extends State<HomePage> {
                   margin: EdgeInsets.only(top: 20),
                   padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                   width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height / 1.18,
+                  height: search? MediaQuery.of(context).size.height/2.2 : MediaQuery.of(context).size.height / 1.18,
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
@@ -55,7 +110,8 @@ class _HomePageState extends State<HomePage> {
                   child: Column(
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(left: 5, right: 10, top: 5, bottom: 5),
+                        padding: EdgeInsets.only(
+                            left: 5, right: 10, top: 5, bottom: 5),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -107,7 +163,8 @@ class _HomePageState extends State<HomePage> {
                       ),
                       SizedBox(height: 15),
                       Padding(
-                        padding: EdgeInsets.only(left: 5, right: 10, top: 5, bottom: 5),
+                        padding: EdgeInsets.only(
+                            left: 5, right: 10, top: 5, bottom: 5),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [

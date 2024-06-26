@@ -1,3 +1,4 @@
+import 'package:chat_app/pages/forgotpassword.dart';
 import 'package:chat_app/pages/home.dart';
 import 'package:chat_app/pages/signup.dart';
 import 'package:chat_app/service/database.dart';
@@ -204,14 +205,24 @@ class _SignInState extends State<SignIn> {
                                 SizedBox(
                                   height: 20,
                                 ),
-                                Container(
-                                    alignment: Alignment.bottomRight,
-                                    child: Text(
-                                      "Forgot Password ?",
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ForgotPassword()),
+                                    );
+                                  },
+                                  child: Container(
+                                      alignment: Alignment.bottomRight,
+                                      child: Text(
+                                        "Forgot Password ?",
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w500),
+                                      )),
+                                ),
 
                                 //SignIn
                                 SizedBox(
@@ -258,37 +269,36 @@ class _SignInState extends State<SignIn> {
                     SizedBox(
                       height: 50,
                     ),
-                Container(
-  margin: EdgeInsets.only(top: 20),
-  child: Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      Text(
-        "Don't have an account?",
-        style: TextStyle(fontSize: 20, color: Colors.black),
-      ),
-      SizedBox(width: 5),
-      GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => SignUp()),
-          );
-        },
-        child: Text(
-          'SignUp',
-          style: TextStyle(
-            color: Color.fromARGB(255, 1, 151, 185),
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-          ),
-        ),
-      ),
-    ],
-  ),
-),
-
-
+                    Container(
+                      margin: EdgeInsets.only(top: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Don't have an account?",
+                            style: TextStyle(fontSize: 20, color: Colors.black),
+                          ),
+                          SizedBox(width: 5),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SignUp()),
+                              );
+                            },
+                            child: Text(
+                              'SignUp',
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 1, 151, 185),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               )
