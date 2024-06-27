@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseMethods {
@@ -56,5 +58,14 @@ class DatabaseMethods {
         .collection("chatrooms")
         .doc(chatRoomId)
         .update(lastMessageInfoMap);
+  }
+
+  Future<Stream<QuerySnapshot>> getChatRoomMessages(ChatRoomId) async {
+    return FirebaseFirestore.instance
+        .collection("chatrooms")
+        .doc(ChatRoomId)
+        .collection("chats")
+        .orderBy("time", descending: true)
+        .snapshots();
   }
 }

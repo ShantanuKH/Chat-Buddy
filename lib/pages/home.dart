@@ -56,6 +56,8 @@ class _HomePageState extends State<HomePage> {
   bool search = false;
 
   String? myName, myProfilePic, myUserName, myEmail;
+  Stream? chatRoomStream;
+
   getthesharedpref() async {
     myName = await SharedPreferenceHelper().getUserDisplayName();
     myProfilePic = await SharedPreferenceHelper().getUserPic();
@@ -67,6 +69,27 @@ class _HomePageState extends State<HomePage> {
   ontheload() async {
     await getthesharedpref();
     setState(() {});
+  }
+
+  // To show all the users on the screen
+  Widget ChatRoomList() {
+    return StreamBuilder(
+        stream: chatRoomStream,
+        builder: (context, AsyncSnapshot snapshot) {
+          return snapshot.hasData
+              ? ListView.builder(
+                padding: EdgeInsets.zero,
+                itemCount: snapshot.data.docs.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  DocumentSnapshot ds = snapshot.data.doc.length;
+
+                  return 
+                })
+              : Center(
+                  child: CircularProgressIndicator(),
+                );
+        });
   }
 
   @override
@@ -252,9 +275,7 @@ class _HomePageState extends State<HomePage> {
                           : Column(
                               children: [
                                 GestureDetector(
-                                  onTap: () {
-                                    
-                                  },
+                                  onTap: () {},
                                   child: Padding(
                                     padding: EdgeInsets.only(
                                         left: 5, right: 10, top: 5, bottom: 5),
@@ -381,7 +402,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget buildResultCard(data) {
     return GestureDetector(
-      onTap: () async{
+      onTap: () async {
         search = false;
         setState(() {});
         var chatRoomId = getChatRoomIdbyUsername(myUserName!, data['username']);
@@ -391,10 +412,13 @@ class _HomePageState extends State<HomePage> {
 
         await DatabaseMethods().createChatRoom(chatRoomId, chatRoomInfoMap);
         Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ChatPage(name: data["Name"], profileurl: data["Photo"], username: data["username"])));
-},
+            context,
+            MaterialPageRoute(
+                builder: (context) => ChatPage(
+                    name: data["Name"],
+                    profileurl: data["Photo"],
+                    username: data["username"])));
+      },
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 8),
         child: Material(
@@ -427,23 +451,46 @@ class _HomePageState extends State<HomePage> {
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
                             fontSize: 18)),
-                  SizedBox(
-                  height: 10,
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      data["username"],
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18),
+                    )
+                  ],
                 ),
-                Text(
-                  data["username"],
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18),
-                ) ],
-                ),
-               
               ],
             ),
           ),
         ),
       ),
     );
+  }
+}
+
+
+class ChatRoomListTiles extends StatefulWidget {
+  final String lastMessage,chatRoomId,myUserName,time;
+  ChatRoomListTiles({required this.chatRoomId,required this.lastMessage,required this.myUserName,required this.time});
+
+  @override
+  State<ChatRoomListTiles> createState() => _ChatRoomListTilesState();
+}
+
+class _ChatRoomListTilesState extends State<ChatRoomListTiles> {
+
+  String profilePicUrl="", name="",username="", id="";
+  getthisUserInfo(){
+    username = widget.chatRoomId.replaceAll("_", "").replaceAll(widget.myUserName, "");
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
   }
 }
