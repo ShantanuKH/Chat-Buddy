@@ -15,44 +15,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   // Search Feature in the app
 
-  // bool search = false;
-
-  // // We created two list here as when we will click on search and type any initials then we would get suggestion of the person starting with the specific initial and also the other list for storing the search
-  // var queryResultSet = [];
-  // var tempSearchStorage = [];
-
-  // initiateSearch(value) {
-  //   // If there is nothing in the textfield then there will be nothing means the lists will be empty
-  //   if (value.length == 0) {
-  //     setState(() {
-  //       queryResultSet = [];
-  //       tempSearchStorage = [];
-  //     });
-  //   }
-  //   // This other setState is for when user will start typing
-
-  //   setState(() {
-  //     search = true;
-  //   });
-  //   var capitalizedValue =
-  //       value.substring(0,1).toUpperCase() + value.substring(1);
-  //   if (queryResultSet.length == 0 && value.length == 1) {
-  //     DatabaseMethods().Search(value).then((QuerySnapshot docs) {
-  //       for (int i = 0; i < docs.docs.length; i++) {
-  //         queryResultSet.add(docs.docs[i].data());
-  //       }
-  //     });
-  //   } else {
-  //     tempSearchStorage = [];
-  //     queryResultSet.forEach((element) {
-  //       if (element["username"].startsWith(capitalizedValue)) {
-  //         setState(() {
-  //           tempSearchStorage.add(element);
-  //         });
-  //       }
-  //     });
-  //   }
-  // }
+  
   bool search = false;
 
   String? myName, myProfilePic, myUserName, myEmail;
@@ -68,29 +31,71 @@ class _HomePageState extends State<HomePage> {
 
   ontheload() async {
     await getthesharedpref();
+    // To get all the details from the firebase firestore
+    chatRoomStream = await DatabaseMethods().getChatRooms();
     setState(() {});
   }
 
   // To show all the users on the screen
+
+ 
+
   Widget ChatRoomList() {
     return StreamBuilder(
         stream: chatRoomStream,
         builder: (context, AsyncSnapshot snapshot) {
           return snapshot.hasData
               ? ListView.builder(
-                padding: EdgeInsets.zero,
-                itemCount: snapshot.data.docs.length,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  DocumentSnapshot ds = snapshot.data.doc.length;
+                  padding: EdgeInsets.zero,
+                  itemCount: snapshot.data.docs.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    DocumentSnapshot ds = snapshot.data.doc.length;
 
-                  return 
-                })
+                    return ChatRoomListTiles(
+                        chatRoomId: ds.id,
+                        lastMessage: ds["lastMessage"],
+                        myUserName: myUserName!,
+                        time: ds["lastMessageSendTs"]);
+                  })
               : Center(
                   child: CircularProgressIndicator(),
                 );
         });
   }
+
+//    Widget ChatRoomList() {
+//   return StreamBuilder(
+//     stream: chatRoomStream,
+//     builder: (context, AsyncSnapshot snapshot) {
+//       if (!snapshot.hasData) {
+//         return Center(
+//           child: CircularProgressIndicator(),
+//         );
+//       }
+
+//       var documents = snapshot.data.docs;
+
+//       return ListView.builder(
+//         padding: EdgeInsets.zero,
+//         itemCount: documents.length,
+//         shrinkWrap: true,
+//         itemBuilder: (context, index) {
+//           DocumentSnapshot ds = documents[index];
+
+//           return ChatRoomListTiles(
+//             chatRoomId: ds.id,
+//             lastMessage: ds["lastMessage"],
+//             myUserName: myUserName!,
+//             time: ds["lastMessageSendTs"],
+//           );
+//         },
+//       );
+//     },
+//   );
+// }
+
+
 
   @override
   void initState() {
@@ -272,132 +277,13 @@ class _HomePageState extends State<HomePage> {
                                 return buildResultCard(element);
                               }).toList(),
                             )
-                          : Column(
-                              children: [
-                                GestureDetector(
-                                  onTap: () {},
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                        left: 5, right: 10, top: 5, bottom: 5),
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(60),
-                                          child: Image.asset(
-                                            "images/sk2.jpg",
-                                            height: 70,
-                                            width: 70,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              SizedBox(
-                                                height: 10,
-                                              ),
-                                              Text(
-                                                "Shantanu Khadse",
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 19,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                              Text(
-                                                "Hello ! What are you doing ?",
-                                                style: TextStyle(
-                                                    color: Colors.black45,
-                                                    fontSize: 15,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        Text(
-                                          "03:20 PM",
-                                          style: TextStyle(
-                                              color: Colors.black45,
-                                              fontSize: 13,
-                                              fontWeight: FontWeight.w500),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(height: 15),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      left: 5, right: 10, top: 5, bottom: 5),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(60),
-                                        child: Image.asset(
-                                          "images/sk1.jpg",
-                                          height: 70,
-                                          width: 70,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            Text(
-                                              "Shantu",
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 19,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            Text(
-                                              "Hello",
-                                              style: TextStyle(
-                                                  color: Colors.black45,
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.w500),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      Text(
-                                        "08:05 PM",
-                                        style: TextStyle(
-                                            color: Colors.black45,
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.w500),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
-        ));
+                          : ChatRoomList(),
+
+                    ], 
+                ),
+             ),
+              ]
+    ))));
   }
 
   Widget buildResultCard(data) {
@@ -472,25 +358,95 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-
 class ChatRoomListTiles extends StatefulWidget {
-  final String lastMessage,chatRoomId,myUserName,time;
-  ChatRoomListTiles({required this.chatRoomId,required this.lastMessage,required this.myUserName,required this.time});
+  final String lastMessage, chatRoomId, myUserName, time;
+  ChatRoomListTiles(
+      {required this.chatRoomId,
+      required this.lastMessage,
+      required this.myUserName,
+      required this.time});
 
   @override
   State<ChatRoomListTiles> createState() => _ChatRoomListTilesState();
 }
 
 class _ChatRoomListTilesState extends State<ChatRoomListTiles> {
-
-  String profilePicUrl="", name="",username="", id="";
-  getthisUserInfo(){
-    username = widget.chatRoomId.replaceAll("_", "").replaceAll(widget.myUserName, "");
+  String profilePicUrl = "", name = "", username = "", id = "";
+  getthisUserInfo() async {
+    username =
+        widget.chatRoomId.replaceAll("_", "").replaceAll(widget.myUserName, "");
+    QuerySnapshot querySnapshot =
+        await DatabaseMethods().getUserInfo(username.toUpperCase());
+    name = "${querySnapshot.docs[0]["Name"]}";
+    profilePicUrl = "${querySnapshot.docs[0]["Photo"]}";
+    id = "${querySnapshot.docs[0]["Id"]}";
+    setState(() {});
   }
 
+  @override
+  void initState() {
+    getthisUserInfo();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          profilePicUrl == ""
+              ? CircularProgressIndicator()
+              : ClipRRect(
+                  borderRadius: BorderRadius.circular(60),
+                  child: Image.network(
+                    profilePicUrl,
+                    height: 70,
+                    width: 70,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+          SizedBox(
+            width: 10,
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  username,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 19,
+                      fontWeight: FontWeight.w500),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width/2,
+                  child: Text(
+                    widget.lastMessage,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        color: Colors.black45,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500),
+                  ),
+                )
+              ],
+            ),
+          ),
+          Text(
+            widget.time,
+            style: TextStyle(
+                color: Colors.black45,
+                fontSize: 13,
+                fontWeight: FontWeight.w500),
+          )
+        ],
+      ),
+    );
   }
 }

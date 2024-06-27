@@ -43,7 +43,8 @@ class _SignUpState extends State<SignUp> {
           "Email": mailcontroller.text,
           "username": updateusername.toUpperCase(),
           "SearchKey": firstletter,
-          "Photo": "https://images.app.goo.gl/CYS1ipQbwLJfd6ZdA",
+          "Photo":
+              "https://www.nicepng.com/png/detail/780-7805650_generic-user-image-male-man-cartoon-no-eyes.png",
           "Id": Id
         };
 
@@ -51,10 +52,10 @@ class _SignUpState extends State<SignUp> {
         await SharedPreferenceHelper().saveUserId(Id);
         await SharedPreferenceHelper().saveUserDisplayName(namecontroller.text);
         await SharedPreferenceHelper().saveUserEmail(mailcontroller.text);
-        await SharedPreferenceHelper()
-            .saveUserPic("https://images.app.goo.gl/CYS1ipQbwLJfd6ZdA");
-        await SharedPreferenceHelper()
-            .saveUserName(mailcontroller.text.replaceAll("@gmail.com", ""));
+        await SharedPreferenceHelper().saveUserPic(
+            "https://www.nicepng.com/png/detail/780-7805650_generic-user-image-male-man-cartoon-no-eyes.png");
+        await SharedPreferenceHelper().saveUserName(
+            mailcontroller.text.replaceAll("@gmail.com", "").toUpperCase());
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -135,7 +136,7 @@ class _SignUpState extends State<SignUp> {
                     ),
                     borderRadius: BorderRadius.vertical(
                       bottom: Radius.elliptical(
-                          MediaQuery.of(context).size.width, 50.5),
+                          MediaQuery.of(context).size.width, 70.5),
                     ),
                   ),
                 ),

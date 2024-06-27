@@ -66,9 +66,10 @@ class _ChatPageState extends State<ChatPage> {
       children: [
         Flexible(
             child: Container(
+              padding: EdgeInsets.only(left: 20,right: 20,top: 10,bottom: 10),
           margin: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           decoration: BoxDecoration(
-            color: sendByMe ? Color(0xFF7ce8ff) : Colors.black45,
+            color: sendByMe ? Color(0xFF7ce8ff) : Colors.black26,
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(20),
                 bottomRight:
