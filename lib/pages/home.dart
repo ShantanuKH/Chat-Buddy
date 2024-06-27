@@ -1,5 +1,6 @@
 import 'package:chat_app/pages/chatpage.dart';
 import 'package:chat_app/service/database.dart';
+import 'package:chat_app/service/shared_pref.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -14,34 +15,110 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   // Search Feature in the app
 
+  // bool search = false;
+
+  // // We created two list here as when we will click on search and type any initials then we would get suggestion of the person starting with the specific initial and also the other list for storing the search
+  // var queryResultSet = [];
+  // var tempSearchStorage = [];
+
+  // initiateSearch(value) {
+  //   // If there is nothing in the textfield then there will be nothing means the lists will be empty
+  //   if (value.length == 0) {
+  //     setState(() {
+  //       queryResultSet = [];
+  //       tempSearchStorage = [];
+  //     });
+  //   }
+  //   // This other setState is for when user will start typing
+
+  //   setState(() {
+  //     search = true;
+  //   });
+  //   var capitalizedValue =
+  //       value.substring(0,1).toUpperCase() + value.substring(1);
+  //   if (queryResultSet.length == 0 && value.length == 1) {
+  //     DatabaseMethods().Search(value).then((QuerySnapshot docs) {
+  //       for (int i = 0; i < docs.docs.length; i++) {
+  //         queryResultSet.add(docs.docs[i].data());
+  //       }
+  //     });
+  //   } else {
+  //     tempSearchStorage = [];
+  //     queryResultSet.forEach((element) {
+  //       if (element["username"].startsWith(capitalizedValue)) {
+  //         setState(() {
+  //           tempSearchStorage.add(element);
+  //         });
+  //       }
+  //     });
+  //   }
+  // }
   bool search = false;
 
-  // We created two list here as when we will click on search and type any initials then we would get suggestion of the person starting with the specific initial and also the other list for storing the search
+  String? myName, myProfilePic, myUserName, myEmail;
+  getthesharedpref() async {
+    myName = await SharedPreferenceHelper().getUserDisplayName();
+    myProfilePic = await SharedPreferenceHelper().getUserPic();
+    myUserName = await SharedPreferenceHelper().getUserName();
+    myEmail = await SharedPreferenceHelper().getUserEmail();
+    setState(() {});
+  }
+
+  ontheload() async {
+    await getthesharedpref();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    ontheload();
+  }
+
+  getChatRoomIdbyUsername(String a, String b) {
+    if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
+      return "$b\_$a";
+    } else {
+      return "$a\_$b";
+    }
+  }
+
+// We created two lists here: one for the suggestions based on the search query
+// and another for storing the search results.
   var queryResultSet = [];
   var tempSearchStorage = [];
 
-  initiateSearch(value) {
-    // If there is nothing in the textfield then there will be nothing means the lists will be empty
-    if (value.length == 0) {
+  void initiateSearch(String value) {
+    // If there is nothing in the textfield, clear the lists.
+    if (value.isEmpty) {
       setState(() {
         queryResultSet = [];
         tempSearchStorage = [];
       });
+      return;
     }
-    // This other setState is for when user will start typing
 
+    // When the user starts typing, set the search flag to true.
     setState(() {
       search = true;
     });
+
+    // Capitalize the first letter of the value.
     var capitalizedValue =
-        value.substring(0,1).toUpperCase() + value.substring(1);
-    if (queryResultSet.length == 0 && value.length == 1) {
+        value.substring(0, 1).toUpperCase() + value.substring(1);
+
+    // If the queryResultSet is empty and the value length is 1, fetch results from the database.
+    if (queryResultSet.isEmpty && value.length == 1) {
       DatabaseMethods().Search(value).then((QuerySnapshot docs) {
-        for (int i = 0; i < docs.docs.length; i++) {
-          queryResultSet.add(docs.docs[1].data());
-        }
+        setState(() {
+          queryResultSet = docs.docs.map((doc) => doc.data()).toList();
+        });
+      }).catchError((error) {
+        // Handle any errors here
+        print("Error fetching search results: $error");
       });
     } else {
+      // Filter the existing results based on the search query.
       tempSearchStorage = [];
       queryResultSet.forEach((element) {
         if (element["username"].startsWith(capitalizedValue)) {
@@ -158,7 +235,9 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(20),
-                          topRight: Radius.circular(20))),
+                          topRight: Radius.circular(20),
+                          bottomLeft: Radius.circular(20),
+                          bottomRight: Radius.circular(20))),
                   child: Column(
                     children: [
                       search
@@ -174,10 +253,7 @@ class _HomePageState extends State<HomePage> {
                               children: [
                                 GestureDetector(
                                   onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => ChatPage()));
+                                    
                                   },
                                   child: Padding(
                                     padding: EdgeInsets.only(
@@ -304,51 +380,67 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget buildResultCard(data) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-      child: Material(
-        elevation: 5,
-        borderRadius: BorderRadius.circular(10),
-        child: Container(
-          padding: EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Row(
-            children: [
-              ClipRRect(
-                  borderRadius: BorderRadius.circular(60),
-                  child: Image.network(
-                    data["Photo"],
-                    height: 50,
-                    width: 50,
-                    fit: BoxFit.cover,
-                  )),
-              SizedBox(
-                width: 10,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(data["Name"],
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18)),
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                data["username"],
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18),
-              )
-            ],
+    return GestureDetector(
+      onTap: () async{
+        search = false;
+        setState(() {});
+        var chatRoomId = getChatRoomIdbyUsername(myUserName!, data['username']);
+        Map<String, dynamic> chatRoomInfoMap = {
+          "users": [myUserName, data['username']],
+        };
+
+        await DatabaseMethods().createChatRoom(chatRoomId, chatRoomInfoMap);
+        Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ChatPage(name: data["Name"], profileurl: data["Photo"], username: data["username"])));
+},
+      child: Container(
+        margin: EdgeInsets.symmetric(vertical: 8),
+        child: Material(
+          elevation: 5,
+          borderRadius: BorderRadius.circular(10),
+          child: Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Row(
+              children: [
+                ClipRRect(
+                    borderRadius: BorderRadius.circular(60),
+                    child: Image.network(
+                      data["Photo"],
+                      height: 50,
+                      width: 50,
+                      fit: BoxFit.cover,
+                    )),
+                SizedBox(
+                  width: 10,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(data["Name"],
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18)),
+                  SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  data["username"],
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18),
+                ) ],
+                ),
+               
+              ],
+            ),
           ),
         ),
       ),

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 class ChatPage extends StatefulWidget {
-  const ChatPage({super.key});
 
+  String name, profileurl, username;
+  ChatPage({required this.name, required this.profileurl, required this.username});
   @override
   State<ChatPage> createState() => _ChatPageState();
 }
@@ -62,7 +63,8 @@ class _ChatPageState extends State<ChatPage> {
                                 padding: EdgeInsets.only(
                                     top: 15, left: 12, right: 10, bottom: 15),
                                 margin: EdgeInsets.only(
-                                    left: MediaQuery.of(context).size.width / 4),
+                                    left:
+                                        MediaQuery.of(context).size.width / 4),
                                 alignment: Alignment.bottomRight,
                                 decoration: BoxDecoration(
                                   color: Color(0xFF7ce8ff),
@@ -81,8 +83,8 @@ class _ChatPageState extends State<ChatPage> {
                                 padding: EdgeInsets.only(
                                     top: 15, left: 12, right: 10, bottom: 15),
                                 margin: EdgeInsets.only(
-                                    right: MediaQuery.of(context).size.width /
-                                        4),
+                                    right:
+                                        MediaQuery.of(context).size.width / 4),
                                 alignment: Alignment.bottomLeft,
                                 decoration: BoxDecoration(
                                   color: Colors.black12,
@@ -122,8 +124,11 @@ class _ChatPageState extends State<ChatPage> {
                               ),
                               Container(
                                 padding: EdgeInsets.all(5),
-                                decoration: BoxDecoration(color: const Color.fromARGB(31, 169, 169, 169),
-                                borderRadius: BorderRadius.all(Radius.circular(20))),
+                                decoration: BoxDecoration(
+                                    color:
+                                        const Color.fromARGB(31, 169, 169, 169),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20))),
                                 child: Center(
                                   child: Icon(
                                     Icons.send,
