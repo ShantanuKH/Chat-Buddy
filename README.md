@@ -27,3 +27,16 @@ Follow these instructions to get a copy of the project up and running on your lo
    ```bash
    git clone https://github.com/ShatanuKH/ChatBuddy.git
    cd ChatBuddy/
+
+ 
+## Author
+
+   ### Shantanu Khadse
+
+   For any query, contribution, You can contact here,
+  
+  GitHub: [ShantanuKH](https://github.com/ShantanuKH)
+  
+  Email: shantanukhadse784@gmail.com  
+  
+  LinkedIn: [shantanukhadse](https://www.linkedin.com/in/shantanu-khadse-a62585230/)
